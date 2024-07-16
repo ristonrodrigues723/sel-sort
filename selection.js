@@ -48,6 +48,56 @@ function resetStats() {
     updateStats();
 }
 
+function updateStats() {
+    comparisonsSpan.textContent = comparisons;
+    swapsSpan.textContent = swaps;
+}
+
+async function selectionSort() {
+    resetStats();
+    const bars = arrayContainer.children;
+    for (let i = 0; i < array.length - 1; i++) {
+        let minIndex = i;
+        bars[i].style.backgroundColor = '#e74c3c';
+        
+        for (let j = i + 1; j < array.length; j++) {
+            bars[j].style.backgroundColor = '#f39c12';
+            await new Promise(resolve => setTimeout(resolve, 50));
+            
+            comparisons++;
+            if (array[j] < array[minIndex]) {
+                if (minIndex !== i) {
+                    bars[minIndex].style.backgroundColor = '#3498db';
+                }
+                minIndex = j;
+                bars[minIndex].style.backgroundColor = '#2ecc71';
+            } else {
+                bars[j].style.backgroundColor = '#3498db';
+            }
+            updateStats();
+        }
+
+        if (minIndex !== i) {
+            [array[i], array[minIndex]] = [array[minIndex], array[i]];
+            [bars[i].style.height, bars[minIndex].style.height] = [bars[minIndex].style.height, bars[i].style.height];
+            [bars[i].title, bars[minIndex].title] = [bars[minIndex].title, bars[i].title];
+            swaps++;
+        }
+        
+        bars[i].style.backgroundColor = '#2ecc71';
+        updateStats();
+        await new Promise(resolve => setTimeout(resolve, 100));
+    }
+    bars[array.length - 1].style.backgroundColor = '#2ecc71';
+}
+
+function runSelectionSort() {
+    if (array.length > 0) {
+        selectionSort();
+    } else {
+        alert('Please add numbers to the array first');
+    }
+}
 
 numberInput.addEventListener('keyup', function(event) {
     if (event.key === 'Enter') {
