@@ -5,6 +5,7 @@ const arraySizeSpan = document.getElementById('arraySize');
 const comparisonsSpan = document.getElementById('comparisons');
 const swapsSpan = document.getElementById('swaps');
 
+
 let comparisons = 0;
 let swaps = 0;
 
@@ -104,5 +105,77 @@ numberInput.addEventListener('keyup', function(event) {
         addNumber();
     }
 });
+
+function showMessage(message, type = 'info') {
+    const messageBox = document.getElementById('messageBox');
+    messageBox.textContent = message;
+    messageBox.className = type;
+    messageBox.style.display = 'block';
+}
+
+function hideMessage() {
+    const messageBox = document.getElementById('messageBox');
+    messageBox.style.display = 'none';
+}
+
+// ... existing code ...
+
+function updateMessageContainer(message) {
+    const messageContainer = document.getElementById('messageContainer');
+    messageContainer.textContent = message;
+}
+
+function arrayToString(arr) {
+    return arr.join(', ');
+}
+
+function addNumber() {
+    const value = parseInt(numberInput.value);
+    if (!isNaN(value) && value >= 0 && value <= 100) {
+        array.push(value);
+        numberInput.value = '';
+        renderArray();
+        updateMessageContainer(`Current array: ${arrayToString(array)}`);
+    } else {
+        alert('Please enter a valid number between 0 and 100');
+    }
+}
+
+function generateRandomArray() {
+    array = Array.from({length: 20}, () => Math.floor(Math.random() * 100) + 1);
+    renderArray();
+    updateMessageContainer(`Generated array: ${arrayToString(array)}`);
+}
+
+function clearArray() {
+    array = [];
+    renderArray();
+    resetStats();
+    updateMessageContainer('Array cleared');
+}
+
+async function selectionSort() {
+    resetStats();
+    const bars = arrayContainer.children;
+    const originalArray = [...array];
+    updateMessageContainer(`Array before sorting: ${arrayToString(originalArray)}`);
+
+    for (let i = 0; i < array.length - 1; i++) {
+        // ... existing sorting code ...
+    }
+    bars[array.length - 1].style.backgroundColor = '#2ecc71';
+    
+    updateMessageContainer(`Array before sorting: ${arrayToString(originalArray)}\nArray after sorting: ${arrayToString(array)}`);
+}
+
+function runSelectionSort() {
+    if (array.length > 0) {
+        selectionSort();
+    } else {
+        alert('Please add numbers to the array first');
+        updateMessageContainer('No array to sort. Please add numbers first.');
+    }
+}
+
 
 generateRandomArray();
